@@ -1,19 +1,25 @@
-// standard module pattern
-// it will be UI Controller
-const UIController = (function(){
-	let text = 'Hello World'
+// revealing module pattern
+// it will be Item Controller
+const ItemController = (function(){
+	let data = []
 
-	const changeText = function(){
-		const element = document.querySelector('h1')
-		element.textContent = text
+	function add(item){
+		data.push(item)
+		console.log('Item is added')
+	}
+
+	function get(id){
+		return data.find(item => {
+			return item.id === id
+		})
 	}
 
 	return {
-		callChangeText: function (){
-			changeText()
-			console.log(text)
-		}
+		add: add,
+		get: get
 	}
+
 })();
 
-UIController.callChangeText()
+ItemController.add({id: 1, name: 'Kate'})
+console.log(ItemController.get(1))
