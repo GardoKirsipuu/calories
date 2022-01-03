@@ -13,9 +13,9 @@ const ItemCtrl = (function(){
 	// Data Structure
 	const data = {
 		items: [
-			{id: 0, name: 'Steak Dinner', calories: 1200},
-			{id: 1, name: 'Cookie', calories: 400},
-			{id: 2, name: 'Eggs', calories: 300},
+			//{id: 0, name: 'Steak Dinner', calories: 1200},
+			//{id: 1, name: 'Cookie', calories: 400},
+			//{id: 2, name: 'Eggs', calories: 300},
 		],
 		total: 0
 	}
@@ -51,6 +51,7 @@ const ItemCtrl = (function(){
 const UICtrl = (function(){
 	// UI selectors
 	const UISelectors = {
+		itemList: '#item-list',
 		itemNameInput: '#item-name',
 		itemCaloriesInput: '#item-calories',
 		addBtn: '.add-btn'
@@ -72,7 +73,7 @@ const UICtrl = (function(){
 			});
 
 			// insert list items
-			document.querySelector("#item-list").innerHTML = html;
+			document.querySelector(UISelectors.itemList).innerHTML = html;
 		},
 		getItemInput: function(){
 			return {
@@ -82,6 +83,26 @@ const UICtrl = (function(){
 		},
 		getSelectors: function(){
 			return UISelectors
+		},
+		addListItem: function(item){
+			// create li element
+			const li = document.createElement('li');
+			// add class
+			li.className = 'collection-item';
+			// add ID
+			li.id = `item-${item.id}`;
+			// add HTML
+			li.innerHTML = `<strong>${item.name}: </strong> 
+				<em>${item.calories} Calories</em>
+				<a href="#" class="secondary-content">
+					<i class="edit-item fa fa-pencil"></i>
+				</a>`;
+			// insert item
+			document.querySelector(UISelectors.itemList).insertAdjacentElement('beforeend', li)
+		},
+		clearInput: function(){
+			document.querySelector(UISelectors.itemNameInput).value = '';
+			document.querySelector(UISelectors.itemCaloriesInput).value = '';
 		}
 	}
 })();
@@ -102,7 +123,8 @@ const App = (function(ItemCtrl, UICtrl){
 		// check name and calorie input
 		if(input.name !== '' && input.calories !== ''){
 			const newItem = ItemCtrl.addItem(input.name, input.calories)
-			console.log(newItem)
+			UICtrl.addListItem(newItem)
+			UICtrl.clearInput();
 		}
 
 		event.preventDefault()
@@ -121,5 +143,4 @@ const App = (function(ItemCtrl, UICtrl){
 	}
 })(ItemCtrl, UICtrl);
 
-// Initialize App
 App.init()
