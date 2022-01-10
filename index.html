@@ -6,6 +6,9 @@
 		<!-- Compiled and minified CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 		<script src="https://kit.fontawesome.com/75c2e5508d.js" crossorigin="anonymous"></script>
+		<style>
+			.hidden {display: none;}
+		</style>
 		<title>calorie project</title>
 	</head>
 	<body>
@@ -13,7 +16,8 @@
 		<nav>
 			<div class="nav-wrapper blue">
 				<div class="container">
-					<a href="#" class="brand-logo cemter">Track calories</a>
+					<a href="#" class="brand-logo aligncenter">Track calories</a>
+					<button class="clear-btn btn right-align blue lighten-4">clear all</button>
 				</div>
 			</div>
 		</nav>
@@ -36,6 +40,11 @@
 								<label for="item-calories">Calories</label>
 							</div>
 							<button class="add-btn btn blue darken-3"><i class="fa fa-plus"></i>Add Meal</button>
+							<div class="hidden edit-btns">
+								<button class="update-btn btn orange darken-1"><i class="fas fa-edit"></i>update meal</button>
+								<button class="del-btn btn red"><i class="fas fa-trash"></i>delete meal</button>
+								<button class="back-btn btn grey darken-1"><i class="fas fa-arrow-circle-left"></i>back</button>
+							</div>
 						</div>
 					</form>
 				</div>

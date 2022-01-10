@@ -28,6 +28,9 @@ const StorageCtrl = (function(){
 				items = JSON.parse(localStorage.getItem('items'));
 			}
 			return items;
+		},
+		clearLS: function(){
+			localStorage.clear();
 		}
 	}
 })();
@@ -98,7 +101,8 @@ const UICtrl = (function(){
 		itemNameInput: '#item-name',
 		itemCaloriesInput: '#item-calories',
 		addBtn: '.add-btn',
-		totalCalories: '.total-calories'
+		totalCalories: '.total-calories',
+		clearBtn: '.clear-btn'
 	}
 
 	return {
@@ -151,6 +155,13 @@ const UICtrl = (function(){
 		showTotalCalories: function(totalCalories){
 			document.querySelector(UISelectors.totalCalories).
 				textContent = totalCalories;
+		},
+		clearUI: function(){
+			document.querySelector(UISelectors.itemList).innerHTML = '';
+			document.querySelector(UISelectors.totalCalories).textContent = '0';
+		},
+		hideShowBtns: function(){
+			document.querySelector('.edit-btns').className = "edit-btns"
 		}
 	}
 })();
@@ -165,6 +176,13 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl){
 		document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit)
 		// add document reload event
 		document.addEventListener('DOMContentLoaded', getItemsFromStorage)
+		// clear all event
+		document.querySelector(UISelectors.clearBtn).addEventListener('click', () => {
+			UICtrl.clearUI();
+			StorageCtrl.clearLS();
+		})
+		// edit event
+		document.querySelector(UISelectors.itemList).addEventListener('click', UICtrl.hideShowBtns)
 	}
 	// add item submit
 	const itemAddSubmit = function(event){
@@ -191,6 +209,14 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl){
 	const getItemsFromStorage = function(){
 		// get items from storage
 		const items = StorageCtrl.getItemsFromStorage()
+		// set storage items to itemCtrl data items
+		items.forEach(function(item){
+			ItemCtrl.addItem(item['name'], item['calories'])
+		})
+		// get total calories
+		const totalCalories = ItemCtrl.getTotalCalories();
+		// add total calories to UI
+		UICtrl.showTotalCalories(totalCalories);
 		// populate items list
 		UICtrl.populateItemList(items)
 	}
