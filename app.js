@@ -103,7 +103,8 @@ const UICtrl = (function(){
 		addBtn: '.add-btn',
 		totalCalories: '.total-calories',
 		clearBtn: '.clear-btn',
-		editBtns: '.edit-btns'
+		editBtns: '.edit-btns',
+		backBtn: '.back-btn'
 	}
 
 	return {
@@ -171,6 +172,11 @@ const UICtrl = (function(){
 				document.querySelector(UISelectors.itemNameInput).value = selectedItem.name;
 				document.querySelector(UISelectors.itemCaloriesInput).value = selectedItem.calories;
 			}
+		},
+		backUI: function(){
+			document.querySelector(UISelectors.editBtns).classList.add('hidden');
+			document.querySelector(UISelectors.addBtn).classList.remove('hidden');
+			UICtrl.clearInput();
 		}
 	}
 })();
@@ -192,6 +198,8 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl){
 		})
 		// edit event
 		document.querySelector(UISelectors.itemList).addEventListener('click', UICtrl.hideShowBtns)
+		// back event
+		document.querySelector(UISelectors.backBtn).addEventListener('click', UICtrl.backUI)
 	}
 	// add item submit
 	const itemAddSubmit = function(event){
