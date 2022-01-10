@@ -102,7 +102,8 @@ const UICtrl = (function(){
 		itemCaloriesInput: '#item-calories',
 		addBtn: '.add-btn',
 		totalCalories: '.total-calories',
-		clearBtn: '.clear-btn'
+		clearBtn: '.clear-btn',
+		editBtns: '.edit-btns'
 	}
 
 	return {
@@ -160,8 +161,16 @@ const UICtrl = (function(){
 			document.querySelector(UISelectors.itemList).innerHTML = '';
 			document.querySelector(UISelectors.totalCalories).textContent = '0';
 		},
-		hideShowBtns: function(){
-			document.querySelector('.edit-btns').className = "edit-btns"
+		hideShowBtns: function(event){
+			if (event.target.parentElement.tagName == 'A') {
+				document.querySelector(UISelectors.addBtn).classList.add('hidden');
+				document.querySelector(UISelectors.editBtns).classList.remove('hidden');
+				item = event.target.parentElement.parentElement.id
+				items = StorageCtrl.getItemsFromStorage()
+				selectedItem = items[item.slice(5)]
+				document.querySelector(UISelectors.itemNameInput).value = selectedItem.name;
+				document.querySelector(UISelectors.itemCaloriesInput).value = selectedItem.calories;
+			}
 		}
 	}
 })();
@@ -224,6 +233,7 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl){
 	return {
 		init: function(){
 			console.log('Initializing App')
+			UICtrl.clearInput()
 			// fetch items from data structure
 			const items = ItemCtrl.getItems()
 			// populate items list
